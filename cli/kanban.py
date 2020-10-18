@@ -49,16 +49,16 @@ if argv[1] == "dir":
         print("Invalid command")
         exit()
 
-elif argv[1] == "board":
+elif argv[1] == "board": # TODO
     pass
 
-elif argv[1] == "label":
+elif argv[1] == "label": # TODO
     pass
 
-elif argv[1] == "column":
+elif argv[1] == "column": # TODO
     pass
 
-elif argv[1] == "task":
+elif argv[1] == "task": # TODO
     pass
 
 else:
