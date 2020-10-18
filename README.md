@@ -11,6 +11,8 @@ so that other people can contribute to it easily.
 - Setup directory for storing notes: ```kanban dir set "path/to/directory"```
 - Get directory for storing notes: ```kanban dir get```
 
+----------
+
 - Create a new Board: ```kanban board add --title "title of board"``` After using this command, the board will automatically be opened.
 - Delete a Board: ```kanban board delete --id {idOfBoard}``` or ```kanban board delete --title "title of board"```
 - Rename a Board: ```kanban board rename --id {idOfBoard} --new "new title of board"``` or ```kanban board rename --old "old title of board" --new "new title of board"```
@@ -19,11 +21,15 @@ so that other people can contribute to it easily.
 After opening a board, you can do stuff with it, e.g. add columns or tasks.
 - Get currently opened board: ```kanban```
 
+----------
+
 - Create a label: ```kanban label add --name "name of label" --color "color of label (in hex)"``` *A color is not necessary, but useful*
 - Delete a label: ```kanban label delete --name "name of label"```
 - Rename a label: ```kanban label rename --old "old name of label" --new "new name of label"```
 - (Re-)color a label: ```kanban label color --name "name of label" --color "color of label (in hex)```
 - List all labels: ```kanban label list```
+
+----------
 
 **You have to open a board before using the following commands:**
 
@@ -31,6 +37,8 @@ After opening a board, you can do stuff with it, e.g. add columns or tasks.
 - Delete a cloumn: ```kanban column delete --title "title of column"```
 - Rename a column: ```kanban column rename --old "old title of column" --new "new title of column"```
 - List all columns: ```kanban column list```
+
+----------
 
 - Add a task to specific column: ```kanban task add --text "text of task" --column "title of column" --label "name of label"``` *A label is not necessary, but useful*
 - Add a task to first column: ```kanban task add --text "text of task" --label "name of label"```
