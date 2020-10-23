@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 import sys
 import json
@@ -6,7 +8,7 @@ argv = sys.argv
 
 # This function returns the content of ~/.config/kanban.json as a dict
 def getConfig():
-    if "kanban.json" in os.path.expanduser("~/.config"):
+    if "kanban.json" in os.listdir(os.path.expanduser("~/.config")):
         with open(os.path.expanduser("~/.config/kanban.json"), "r+") as f:
             return json.load(f)
     else: # config file doesn't exist
@@ -36,9 +38,9 @@ if argv[1] == "dir":
             print("Invalid command")
             exit()
 
-    elif ergv[2] == "get":
+    elif argv[2] == "get":
         if len(argv) == 3:
-            print(getConfig()["path"]
+            print(getConfig()["path"])
             exit()
 
         else:
@@ -50,7 +52,24 @@ if argv[1] == "dir":
         exit()
 
 elif argv[1] == "board": # TODO
-    pass
+    if argv[2] == "add":
+        pass
+
+    elif argv[2] == "delete":
+        pass
+
+    elif argv[2] == "rename":
+        pass
+
+    elif argv[2] == "list":
+        pass
+
+    elif argv[2] == "open":
+        pass
+
+    else:
+        print("Invalid command")
+        exit()
 
 elif argv[1] == "label": # TODO
     pass
@@ -62,5 +81,9 @@ elif argv[1] == "task": # TODO
     pass
 
 else:
-    print("Invalid command")
-    exit()
+    if len(argv) == 1:
+        pass # get opened board
+
+    else:
+        print("Invalid command")
+        exit()
