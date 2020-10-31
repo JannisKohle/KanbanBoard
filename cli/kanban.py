@@ -3,6 +3,7 @@
 import os
 import sys
 import json
+import random
 
 argv = sys.argv
 
@@ -11,8 +12,24 @@ def getConfig():
     if "kanban.json" in os.listdir(os.path.expanduser("~/.config")):
         with open(os.path.expanduser("~/.config/kanban.json"), "r+") as f:
             return json.load(f)
-    else: # config file doesn't exist
+    else:  # config file doesn't exist
         return "error"
+
+# This function creates a new, unique id
+def generateId():
+    used = listBoards()  # all used ids
+    while True:
+        new = random.randint(100, 999)
+        if new not in used:
+            return new
+
+##########
+
+def listBoards():
+    return [id for id in os.listdir(os.path.expanduser(getConfig()["path"]+"/boards")) if not id.startswith(".")]
+
+def listLabels():
+    return os.listdir(os.path.expanduser(getConfig()["path"]+"/labels"))
 
 ##########
 
@@ -20,13 +37,14 @@ if argv[1] == "dir":
     if argv[2] == "set":
         if len(argv) == 4:
             path = argv[3]
-            if "kanban.json" in os.path.expanduser("~/.config"): # config file already exists -> overwrite it
+            # config file already exists -> overwrite it
+            if "kanban.json" in os.path.expanduser("~/.config"):
                 with open(os.path.expanduser("~/.config/kanban.json"), "r+") as f:
                     content = json.load(f)
                     content["path"] = path
                     f.truncate(0)
                     json.dump(content, f)
-            else: # config file doesn't exist
+            else:  # config file doesn't exist
                 os.system(f"touch {os.path.expanduser('~/.config/kanban.json')}")
                 with open(os.path.expanduser("~/.config/kanban.json"), "r+") as f:
                     json.dump({"path": path, "opened": None}, f)
@@ -51,9 +69,21 @@ if argv[1] == "dir":
         print("Invalid command")
         exit()
 
-elif argv[1] == "board": # TODO
+elif argv[1] == "board":  # TODO
     if argv[2] == "add":
-        pass
+        if len(argv) == 5 and argv[3] == "--title":
+            title = argv[4]
+            id = generateId()
+            os.system(f"mkdir {os.path.expanduser(getConfig()["path"])}/boards/{id}") # create directory
+
+            os.system(f"touch {os.path.expanduser(getConfig()["path"])}/boards/{id}/.info.json") # create info file
+            with open(f"{os.path.expanduser(getConfig()["path"])}/boards/{id}/.info.json") as f: # write info file
+                content = {"id": id, "title": title}
+                json.dump(content, f)
+
+        else:
+            print("Invalid command")
+            exit()
 
     elif argv[2] == "delete":
         pass
@@ -71,18 +101,18 @@ elif argv[1] == "board": # TODO
         print("Invalid command")
         exit()
 
-elif argv[1] == "label": # TODO
+elif argv[1] == "label":  # TODO
     pass
 
-elif argv[1] == "column": # TODO
+elif argv[1] == "column":  # TODO
     pass
 
-elif argv[1] == "task": # TODO
+elif argv[1] == "task":  # TODO
     pass
 
 else:
     if len(argv) == 1:
-        pass # get opened board
+        pass  # get opened board
 
     else:
         print("Invalid command")
