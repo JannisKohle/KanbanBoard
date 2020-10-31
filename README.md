@@ -49,3 +49,14 @@ After opening a board, you can do stuff with it, e.g. add columns or tasks.
 - List all tasks in a specific column: ```kanban task list --column "title of column"```
 - List all tasks with a specific label: ```kanban label list --label "name of label"```
 - Add a label to a task: ```kanban task label --text "text of task" --label "name of label"```
+
+## Notes for myself:
+
+### How stuff is stored:
+
+- Every board has its own directory inside ```{dir}/boards/``` (name ist the id)
+- Info about the board is stored in ```{dir}/boards/{boardId}/.info.json```
+- Every column is stored as a directory inside ```{dir}/boards/{boardId}/```
+- Info about a column is stored in ```{dir}/boards/{boardId}/{columnName}/.info.json```
+- Tasks are stored as json files inside ```{dir}/boards/{boardId}/{columnName}/```
+- Labels are stored as json files inside ```{dir}/labels/```
