@@ -45,7 +45,7 @@ if argv[1] == "dir":
                     f.truncate(0)
                     json.dump(content, f)
             else:  # config file doesn't exist
-                os.system(f"touch {os.path.expanduser('~/.config/kanban.json')}")
+                os.system(f"touch ~/.config/kanban.json")
                 with open(os.path.expanduser("~/.config/kanban.json"), "r+") as f:
                     json.dump({"path": path, "opened": None}, f)
 
@@ -74,10 +74,10 @@ elif argv[1] == "board":  # TODO
         if len(argv) == 5 and argv[3] == "--title":
             title = argv[4]
             id = generateId()
-            os.system(f"mkdir {os.path.expanduser(getConfig()["path"])}/boards/{id}") # create directory
+            os.system(f"mkdir {getConfig()["path"]}/boards/{id}") # create directory
 
-            os.system(f"touch {os.path.expanduser(getConfig()["path"])}/boards/{id}/.info.json") # create info file
-            with open(f"{os.path.expanduser(getConfig()["path"])}/boards/{id}/.info.json") as f: # write info file
+            os.system(f"touch {getConfig()["path"]}/boards/{id}/.info.json") # create info file
+            with open(f"{os.path.expanduser(getConfig()["path"])}/boards/{id}/.info.json", "r+") as f: # write info file
                 content = {"id": id, "title": title}
                 json.dump(content, f)
 
@@ -86,7 +86,38 @@ elif argv[1] == "board":  # TODO
             exit()
 
     elif argv[2] == "delete":
-        pass
+        if len(argv) == 5:
+            if argv[3] == "--id":
+                if argv[4] in listBoards():
+                    with open(f"{os.path.expanduser(getConfig()["path"])}/boards/{argv[4]}/.info.json", "r+") as f:
+                        title = json.load(f)["title"]
+                    if input(f"Delete board {title}? (y/n) ") == "y":
+                        os.system(f"rm -r {getConfig()["path"]}/boards/{argv[4]}")
+                    exit()
+
+                else:
+                    print(f"Board #{argv[4]} does not exist.")
+                    exit()
+
+            elif argv[3] == "--title":
+                for id in listBoards():
+                    with open(f"", "r+") as f:
+                        title = json.load(f)["title"]
+                    if title == argv[4]:
+                        if input(f"Delete board {argv[4]}? (y/n) ") == "y":
+                            os.system(f"rm -r {getConfig()["path"]}/boards/{id}")
+                        exit()
+
+                print(f"Board {argv[4]} does not exist.")
+                exit()
+
+            else:
+                print("Invalid command")
+                exit()
+
+        else:
+            print("Invalid command")
+            exit()
 
     elif argv[2] == "rename":
         pass
