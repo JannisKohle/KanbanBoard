@@ -20,6 +20,7 @@ so that other people can contribute to it easily.
 - Open a Board: ```kanban board open --id {idOfBoard}``` or ```kanban board open --title "title of board"```
 After opening a board, you can do stuff with it, e.g. add columns or tasks.
 - Get currently opened board: ```kanban```
+- Show graphical version of currently opened board: ```kanban show``` or ```kanban board show --id {idOfBoard}``` or ```kanban board show --title "title of board"```
 
 ----------
 
