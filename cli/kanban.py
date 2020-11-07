@@ -128,7 +128,45 @@ elif argv[1] == "board":  # TODO
             exit()
 
     elif argv[2] == "rename":
-        pass
+        if len(argv) == 7:
+            if argv[5] == "--new": # argv[6] is new title
+                if argv[3] == "--id": # argv[4] is id
+                    if argv[4] in listBoards():
+                        with open(f"{getFullPath()}/boards/{argv[4]}/.info.json", "r+") as f:
+                            content = json.load(f)
+                            content["title"] = argv[6]
+                            f.truncate(0)
+                            json.dump(content, f)
+                        print(f"Successfully renamed board #{argv[4]}")
+
+                    else:
+                        print(f"Board #{argv[4]} does not exist.")
+
+                    exit()
+
+                elif argv[3] == "--old": # argv[4] is old title
+                    for id in listBoards():
+                        with open(f"{getFullPath()}/boards/{id}/.info.json", "r+") as f:
+                            content = json.load(f)
+                            if content["title"] == argv[4]: # it's the right one
+                                content["title"] == argv[6]
+                                json.dump(content, f)
+                                exit()
+
+                    print(f"Board {argv[4]} does not exist.")
+                    exit()
+
+                else:
+                    print("Invalid command")
+                    exit()
+
+            else:
+                print("Invalid command")
+                exit()
+
+        else:
+            print("Invalid command")
+            exit()
 
     elif argv[2] == "list":
         pass
