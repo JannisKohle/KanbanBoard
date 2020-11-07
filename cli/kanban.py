@@ -169,10 +169,38 @@ elif argv[1] == "board":  # TODO
             exit()
 
     elif argv[2] == "list":
-        pass
+        for id in listBoards():
+            with open(f"{getFullPath()}/boards/{id}/.info.json", "r+") as f:
+                title = json.load(f)["title"]
+            print(f"#{id}:   {title}")
+        exit()
 
-    elif argv[2] == "open":
-        pass
+    elif argv[2] == "open": # TODO: Check if config file exists!
+        if len(argv) == 5:
+            if argv[3] == "--id":
+                if argv[4] in listBoards():
+                    with open(os.path.expanduser('~/.config/kanban.json'), "r+") as f:
+                        content = json.load(f)
+                        content["opened"] = argv[4]
+                        f.truncate(0)
+                        json.dump(content, f)
+
+                else:
+                    print(f"Board #{id} does not exist.")
+                    exit()
+
+            elif argv[3] == "--title":
+                for id in listBoards():
+                    with open(f"{getFullPath()}/boards/{id}/.info.json", "r+") as f:
+                        pass
+
+            else:
+                print("Invalid command")
+                exit()
+
+        else:
+            print("Invalid command")
+            exit()
 
     elif argv[2] == "show":
         pass
