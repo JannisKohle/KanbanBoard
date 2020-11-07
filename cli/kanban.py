@@ -174,6 +174,9 @@ elif argv[1] == "board":  # TODO
     elif argv[2] == "open":
         pass
 
+    elif argv[2] == "show":
+        pass
+
     else:
         print("Invalid command")
         exit()
