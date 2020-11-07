@@ -15,6 +15,14 @@ def getConfig():
     else:  # config file doesn't exist
         return "error"
 
+def getFullPath():
+    config = getConfig()
+    if config != "error":
+        return os.path.expanduser(config["path"])
+    else:
+        print("You haven't specified a directory for storing boards & labels yet.")
+        exit()
+
 # This function creates a new, unique id
 def generateId():
     used = listBoards()  # all used ids
@@ -26,10 +34,10 @@ def generateId():
 ##########
 
 def listBoards():
-    return [id for id in os.listdir(os.path.expanduser(getConfig()["path"]+"/boards")) if not id.startswith(".")]
+    return [id for id in os.listdir(getFullPath()+"/boards") if not id.startswith(".")]
 
 def listLabels():
-    return os.listdir(os.path.expanduser(getConfig()["path"]+"/labels"))
+    return os.listdir(getFullPath()+"/labels")
 
 ##########
 
@@ -58,7 +66,7 @@ if argv[1] == "dir":
 
     elif argv[2] == "get":
         if len(argv) == 3:
-            print(getConfig()["path"])
+            print(getFullPath())
             exit()
 
         else:
@@ -74,10 +82,10 @@ elif argv[1] == "board":  # TODO
         if len(argv) == 5 and argv[3] == "--title":
             title = argv[4]
             id = generateId()
-            os.system(f"mkdir {getConfig()["path"]}/boards/{id}") # create directory
+            os.system(f"mkdir {getFullPath()}/boards/{id}") # create directory
 
-            os.system(f"touch {getConfig()["path"]}/boards/{id}/.info.json") # create info file
-            with open(f"{os.path.expanduser(getConfig()["path"])}/boards/{id}/.info.json", "r+") as f: # write info file
+            os.system(f"touch {getFullPath()}/boards/{id}/.info.json") # create info file
+            with open(f"{getFullPath()}/boards/{id}/.info.json", "r+") as f: # write info file
                 content = {"id": id, "title": title}
                 json.dump(content, f)
 
@@ -89,10 +97,10 @@ elif argv[1] == "board":  # TODO
         if len(argv) == 5:
             if argv[3] == "--id":
                 if argv[4] in listBoards():
-                    with open(f"{os.path.expanduser(getConfig()["path"])}/boards/{argv[4]}/.info.json", "r+") as f:
+                    with open(f"{getFullPath()}/boards/{argv[4]}/.info.json", "r+") as f:
                         title = json.load(f)["title"]
                     if input(f"Delete board {title}? (y/n) ") == "y":
-                        os.system(f"rm -r {getConfig()["path"]}/boards/{argv[4]}")
+                        os.system(f"rm -r {getFullPath()}/boards/{argv[4]}")
                     exit()
 
                 else:
@@ -101,11 +109,11 @@ elif argv[1] == "board":  # TODO
 
             elif argv[3] == "--title":
                 for id in listBoards():
-                    with open(f"", "r+") as f:
+                    with open(f"{getFullPath()}/boards/{id}", "r+") as f:
                         title = json.load(f)["title"]
                     if title == argv[4]:
                         if input(f"Delete board {argv[4]}? (y/n) ") == "y":
-                            os.system(f"rm -r {getConfig()["path"]}/boards/{id}")
+                            os.system(f"rm -r {getFullPath()}/boards/{id}")
                         exit()
 
                 print(f"Board {argv[4]} does not exist.")
